@@ -121,5 +121,63 @@
         "e": 13.0
       }
     ]
+  },
+  {
+    "name": "patrick jane çinli kız",
+    "category": "Aksiyon",
+    "language": "tr",
+    "duration": 30,
+    "video": "thementalist.mp4",
+    "thumb": "thementalist.jpg",
+    "chars": [
+      "Patrick jane",
+      "çinli kız",
+      "kimball cho",
+      "Grace Van Pelt"
+    ],
+    "lines": [
+      {
+        "c": 0,
+        "text": "eee kız nerde, bu bir soruydu he",
+        "s": 0,
+        "e": 3.5
+      },
+      {
+        "c": 4,
+        "text": "kız bu türkçe konuşmuyor sadece çince",
+        "s": 6.5,
+        "e": 10.0
+      },
+      {
+        "c": 0,
+        "text": "tamaam. merhaba ben patrick",
+        "s": 10.0,
+        "e": 14.5
+      },
+      {
+        "c": 2,
+        "text": "(çince bişeyler)",
+        "s": 15.0,
+        "e": 17.0
+      },
+      {
+        "c": 3,
+        "text": "bir tercümana ihtiyacımız olacak",
+        "s": 18.0,
+        "e": 20.0
+      },
+      {
+        "c": 0,
+        "text": "omzundaki o iğrenç şey de ne",
+        "s": 21.5,
+        "e": 24.0
+      },
+      {
+        "c": 0,
+        "text": "o türkçe biliyo. sadece biraz utangaç. değil mi?",
+        "s": 25.5,
+        "e": 29.0
+      }
+    ]
   }
 ]
