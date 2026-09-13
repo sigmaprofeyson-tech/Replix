@@ -348,17 +348,152 @@
     ],
     "lines": [
       {
-        "c": 1,
+        "c": 0,
         "text": "lütfen patron, o şeyi yüzüme kapatma,beni karanlıkta bırakma karanlıktan korkuyorum",
         "s": 6.0,
         "e": 19.0
       },
       {
-        "c": 0,
-        "text": "bynie",
+        "c": 1,
+        "text": "peki john",
         "s": 27.0,
         "e": 29.0
       }
+    ]
+  }
+    {
+    "name": "kuru kalmadı oğlumuz",
+    "category": "Komedi",
+    "language": "tr",
+    "duration": 58,
+    "video": "kurukalmadioglumus.mp4",
+    "thumb": "kurukalmadioglumus.jpg",
+    "chars": [
+      "aykut",
+      "aykutun arkadaşı",
+      "ümit usta"
+    ],
+    "lines": [
+      {
+        "c": 0,
+        "text": "kendi evinin altında 11 gibi açıyo 2 gibi kapatıyo zaten kalmıyo o ana kadar, effsane bir tat yalnız?",
+        "s": 0,
+        "e": 6.5
+      },
+      {
+        "c": 0,
+        "text": "ümit usta iki kuru versene bize be",
+        "s": 6.0,
+        "e": 8.0
+      },
+      {
+        "c": 2,
+        "text": "kuru kalmadı oğlumuz",
+        "s": 8.0,
+        "e": 10.0
+      },
+      {
+        "c": 0,
+        "text": "yapma be abi, iyi yarın geliriz biz o zaman",
+        "s": 10.0,
+        "e": 12.0
+      },
+      {
+        "c": 2,
+        "text": "ha yarın açmam",
+        "s": 12.0,
+        "e": 14.0
+      },
+      {
+        "c": 0,
+        "text": "hadi ya, iyi cuma geliriz biz o zaman",
+        "s": 14.0,
+        "e": 16.0
+      },
+      {
+        "c": 2,
+        "text": "cuma da açmam",
+        "s": 16.0,
+        "e": 17.5
+      },      
+      {
+        "c": 1,
+        "text": "cuma gelemeyiz zaten toplantı var",
+        "s": 18.0,
+        "e": 20.0
+      },
+      {
+        "c": 2,
+        "text": "aha cuma açarım o zaman",
+        "s": 20.0,
+        "e": 21.0
+      },
+      {
+        "c": 0,
+        "text": "ümit usta iki kuru ver bize be",
+        "s": 21.0,
+        "e": 23.0
+      },
+      {
+        "c": 2,
+        "text": "kalmadı oğlumuz yaauv",
+        "s": 23.0,
+        "e": 25.0
+      },
+      {
+        "c": 0,
+        "text": "saat on birde açmadın mı sen, on biri on geçiyor ne ara bitti",
+        "s": 25.0,
+        "e": 28.0
+      },
+      {
+        "c": 2,
+        "text": "böğön bi kase yaptım kendime kadar, yedim onu ya",
+        "s": 28.0,
+        "e": 31.0
+      },
+      {
+        "c": 0,
+        "text": "hadi ya, yarın kaçta açıcan",
+        "s": 30.0,
+        "e": 32.0
+      },
+      {
+        "c": 2,
+        "text": "sabağnan dört buçukta açarım",
+        "s": 32.0,
+        "e": 34.0
+      },
+      {
+        "c": 0,
+        "text": "(esneyerek) ümit usta bize iki kuru versene",
+        "s": 34.0,
+        "e": 36.0
+      },
+      {
+        "c": 2,
+        "text": "oğlumuz ne kurusu yav sabah sabah",
+        "s": 36.0,
+        "e": 38.5
+      },
+      {
+        "c": 0,
+        "text": "abi sen demedin mi sabah dört buçukta açıcam diye",
+        "s": 39.0,
+        "e": 41.0
+      },
+      {
+        "c": 2,
+        "text": "açtım da kapatacam yav camiye gitcem sular soğuk orda burda sıcağnan abdest aldım gidcem şimdi, 11 gibi gel",
+        "s": 41.0,
+        "e": 48.0
+      },
+      {
+        "c": 0,
+        "text": "buney, narsist kişiliğime yenilk düştüm ve zirvede bırakıyorum siz bunu okuduğunuzda ben çoktan emekli olmuş olacağım, gurucu üye ümit usta",
+        "s": 48.0,
+        "e": 58.0
+      },
     ]
   }
 ]
