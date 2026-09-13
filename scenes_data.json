@@ -1,7 +1,7 @@
 [
   {
     "name": "karabiber küfürbaz haydo",
-    "category": "Aksiyon",
+    "category": "Komedi",
     "language": "tr",
     "duration": 37,
     "video": "karabiber.mp4",
@@ -495,5 +495,74 @@
         "e": 58.0
       }
     ]
-  }
+  },
+  {
+    "name": "polat alemdar sorgu",
+    "category": "Dram",
+    "language": "tr",
+    "duration": 24,
+    "video": "polatsorgu.mp4",
+    "thumb": "polatsorgu.jpg",
+    "chars": [
+      "Polat Alemdar",
+      "Sorgucu",
+      "aynanın arkasındaki adam"
+    ],
+    "lines": [
+      {
+        "c": 1,
+        "text": "Neden almanyada mafya babası olmak istemiyorsun da, burda olmak istiyorsun?",
+        "s": 0.0,
+        "e": 5.0
+      },
+      {
+        "c": 0,
+        "text": "Orda katil oldum, burda adil oldum",
+        "s": 5.5,
+        "e": 8.0
+      },
+      {
+        "c": 1,
+        "text": "adil olmayı çakırdan mı öğrendin",
+        "s": 8.0,
+        "e": 10.0
+      },
+      {
+        "c": 0,
+        "text": "çakırın da öğrendiği yerden, dayımdan",
+        "s": 10.5,
+        "e": 13.0
+      },
+      {
+        "c": 1,
+        "text": "duran emmi?",
+        "s": 13.0,
+        "e": 14.5
+      },
+      {
+        "c": 0,
+        "text": "aynanın arkasında kim var",
+        "s": 15.0,
+        "e": 17.0
+      },
+      {
+        "c": 1,
+        "text": "çok mu meraklısın",
+        "s": 17.5,
+        "e": 19.0
+      },
+      {
+        "c": 0,
+        "text": "aynanın arkasındakiler kadar değil",
+        "s": 19.0,
+        "e": 21.0
+      },
+      {
+        "c": 2,
+        "text": "çok rahat, çok profesyonel",
+        "s": 21.5,
+        "e": 24.0
+      },
+    ]
+  },
 ]
