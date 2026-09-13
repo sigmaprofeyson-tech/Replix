@@ -177,7 +177,7 @@
         "text": "o türkçe biliyo. sadece biraz utangaç. değil mi?",
         "s": 25.5,
         "e": 29.0
-      },
+      }
     ]
   },
   {
@@ -235,11 +235,11 @@
         "e": 38.0
       },
       {
-        "c": 1,
+        "c": 0,
         "text": "dombili, seks manyağı dombik",
         "s": 37.5,
         "e": 40.0
       }
     ]
-  },
+  }
 ]
