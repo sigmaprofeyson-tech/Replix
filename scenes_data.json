@@ -22,4 +22,19 @@
       { "c": 0, "text": "(yarı bağırarak) ananı si-", "s": 36.0, "e": 37.0 }
     ]
   }
+  {
+    "name": "toji edit",
+    "category": "Animasyon",
+    "language": "tr",
+    "duration": 15,
+    "video": "tojiedit.mp4",	
+    "thumb": "tojiedit.jpg",
+    "chars": ["Toji"],
+    "lines": [
+      { "c": 0, "text": "aileden gelen nimetleriniz var", "s": 0, "e": 3.0 },
+      { "c": 0, "text": "ama onca nimetin arasında", "s": 3.2, "e": 5.5 },
+      { "c": 0, "text": "benim gibi jujutsu bile kullanamayan bir maymuna yenildiniz", "s": 6.0, "e": 10.0 },
+      { "c": 0, "text": "uzun yaşayacaksan bunu hep hatırla", "s": 11.0, "e": 13.0 },
+    ]
+  }
 ]
