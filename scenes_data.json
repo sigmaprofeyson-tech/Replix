@@ -6,35 +6,120 @@
     "duration": 37,
     "video": "karabiber.mp4",
     "thumb": "karabiber.jpg",
-    "chars": ["küfürbaz haydo", "bugs bunny"],
+    "chars": [
+      "küfürbaz haydo",
+      "bugs bunny"
+    ],
     "lines": [
-      { "c": 1, "text": "ha o karabiber o tarata midur onu getir bana bakayim", "s": 0, "e": 3.2 },
-      { "c": 0, "text": "karabiber mi? sikerim senin karabiberini", "s": 3.5, "e": 6.0 },
-      { "c": 1, "text": "ahanda bozdun ağzını hemen eeeey gidi", "s": 6.0, "e": 9.0 },
-      { "c": 0, "text": "ehehe garabiber mi istiyon getiriyom lan getiriyom manyaak", "s": 9.0, "e": 13.0 },
-      { "c": 0, "text": "al hele al, al ek çorbana ek çorbana", "s": 13.2, "e": 16.0 },
-      { "c": 0, "text": "(fısıldayarak) amuğakoyduğumseni", "s": 16.5, "e": 18.5 },
-      { "c": 1, "text": "ha bu tuz da o tarafda biyerde mi ya", "s": 18.0, "e": 20.5 },
-      { "c": 0, "text": "(sessizce) ıhığmm ananı sikem-", "s": 21.0, "e": 22.5 },
-      { "c": 0, "text": "(sinirden gülerek) evet burdaymış bak tuzda burdaymış, allah allah dokanır sana oğlum tuz çok kullanma lan", "s": 23.0, "e": 30.0 },
-      { "c": 1, "text": "ha oraya pul biber de var midur ya?", "s": 30.0, "e": 32.0 },
-      { "c": 0, "text": "pul biber mi.. ananın", "s": 32.5, "e": 34.0 },
-      { "c": 0, "text": "(yarı bağırarak) ananı si-", "s": 36.0, "e": 37.0 }
+      {
+        "c": 1,
+        "text": "ha o karabiber o tarata midur onu getir bana bakayim",
+        "s": 0,
+        "e": 3.2
+      },
+      {
+        "c": 0,
+        "text": "karabiber mi? sikerim senin karabiberini",
+        "s": 3.5,
+        "e": 6.0
+      },
+      {
+        "c": 1,
+        "text": "ahanda bozdun ağzını hemen eeeey gidi",
+        "s": 6.0,
+        "e": 9.0
+      },
+      {
+        "c": 0,
+        "text": "ehehe garabiber mi istiyon getiriyom lan getiriyom manyaak",
+        "s": 9.0,
+        "e": 13.0
+      },
+      {
+        "c": 0,
+        "text": "al hele al, al ek çorbana ek çorbana",
+        "s": 13.2,
+        "e": 16.0
+      },
+      {
+        "c": 0,
+        "text": "(fısıldayarak) amuğakoyduğumseni",
+        "s": 16.5,
+        "e": 18.5
+      },
+      {
+        "c": 1,
+        "text": "ha bu tuz da o tarafda biyerde mi ya",
+        "s": 18.0,
+        "e": 20.5
+      },
+      {
+        "c": 0,
+        "text": "(sessizce) ıhığmm ananı sikem-",
+        "s": 21.0,
+        "e": 22.5
+      },
+      {
+        "c": 0,
+        "text": "(sinirden gülerek) evet burdaymış bak tuzda burdaymış, allah allah dokanır sana oğlum tuz çok kullanma lan",
+        "s": 23.0,
+        "e": 30.0
+      },
+      {
+        "c": 1,
+        "text": "ha oraya pul biber de var midur ya?",
+        "s": 30.0,
+        "e": 32.0
+      },
+      {
+        "c": 0,
+        "text": "pul biber mi.. ananın",
+        "s": 32.5,
+        "e": 34.0
+      },
+      {
+        "c": 0,
+        "text": "(yarı bağırarak) ananı si-",
+        "s": 36.0,
+        "e": 37.0
+      }
     ]
-  }
+  },
   {
     "name": "toji edit",
     "category": "Animasyon",
     "language": "tr",
     "duration": 15,
-    "video": "tojiedit.mp4",	
+    "video": "tojiedit.mp4",
     "thumb": "tojiedit.jpg",
-    "chars": ["Toji"],
+    "chars": [
+      "Toji"
+    ],
     "lines": [
-      { "c": 0, "text": "aileden gelen nimetleriniz var", "s": 0, "e": 3.0 },
-      { "c": 0, "text": "ama onca nimetin arasında", "s": 3.2, "e": 5.5 },
-      { "c": 0, "text": "benim gibi jujutsu bile kullanamayan bir maymuna yenildiniz", "s": 6.0, "e": 10.0 },
-      { "c": 0, "text": "uzun yaşayacaksan bunu hep hatırla", "s": 11.0, "e": 13.0 },
+      {
+        "c": 0,
+        "text": "aileden gelen nimetleriniz var",
+        "s": 0,
+        "e": 3.0
+      },
+      {
+        "c": 0,
+        "text": "ama onca nimetin arasında",
+        "s": 3.2,
+        "e": 5.5
+      },
+      {
+        "c": 0,
+        "text": "benim gibi jujutsu bile kullanamayan bir maymuna yenildiniz",
+        "s": 6.0,
+        "e": 10.0
+      },
+      {
+        "c": 0,
+        "text": "uzun yaşayacaksan bunu hep hatırla",
+        "s": 11.0,
+        "e": 13.0
+      }
     ]
   }
 ]
