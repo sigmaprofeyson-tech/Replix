@@ -87,7 +87,7 @@ socket.on('assigned:you',({chars})=>{
   curIdx = 0;
   go('game');
   $('g-title').textContent = sc.name; $('g-code').textContent = ROOM;
-  const v = $('g-video'); v.src = '/uploads/'+sc.video; v.load();
+  const v = $('g-video'); v.src = '/uploads/'+(sc.video_mute||sc.video); v.muted = true; v.load();
   toast('Karakterin: '+chars.join(' + '));
   nextLine();
 });
@@ -147,31 +147,37 @@ function nextLine(){
 function startRec(){
   const l = myLines[curIdx];
   $('rec-btn').disabled = true;
+  $('count').textContent='3';
+  let c=3;
+  const cd = setInterval(()=>{ c--; if(c<=0){ clearInterval(cd); armRec(l); } else $('count').textContent=c; },650);
+}
+
+function armRec(l){
   getMic().then(async (stream)=>{
     const v = $('g-video');
     const mr = new MediaRecorder(stream, {mimeType: MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':undefined});
     const chunks=[]; mr.ondataavailable=e=>chunks.push(e.data);
-    curBlob = null;
+    curBlob=null;
     mr.onstop = ()=>{ curBlob = new Blob(chunks,{type:'audio/webm'}); afterRec(l); };
-    // geri sayım
-    $('count').textContent='3'; let c=3;
-    await new Promise(res=>{ const iv=setInterval(()=>{ c--; if(c<=0){clearInterval(iv);res();} else $('count').textContent=c; },650); });
     $('rec-dot').classList.add('on');
-    try{ v.currentTime = Math.max(0,l.s-0.4); await v.play(); }catch(e){}
-    const begin = ()=>{
-      if(v.currentTime >= l.s || v.paused){ beginRec(); v.removeEventListener('timeupdate',begin); }
-    };
-    function beginRec(){
-      mr.start(); $('count').textContent='●';
-      const stopAt = ()=>{ if(v.currentTime>=l.e||v.paused){ cleanup(); v.removeEventListener('timeupdate',stopAt); } };
+    try{ v.currentTime = Math.max(0,l.s-0.3); await v.play(); }catch(e){}
+    let started=false;
+    function go(){
+      if(started) return; started=true;
+      try{ mr.start(); }catch(e){ return; }
+      $('count').textContent='\u25CF';
+      const stopAt = ()=>{ if(v.currentTime>=l.e+0.3||v.paused){ end(); v.removeEventListener('timeupdate',stopAt); } };
+      function end(){ if(mr.state!=='inactive'){ try{mr.stop();}catch(e){} } cleanup(); }
       v.addEventListener('timeupdate',stopAt);
-      setTimeout(()=>{ try{mr.state!=='inactive'&&mr.stop();}catch(e){} cleanup(); }, (l.e-l.s+1.2)*1000);
+      setTimeout(end, (l.e-l.s+2.5)*1000);
     }
     function cleanup(){ $('rec-dot').classList.remove('on'); try{v.pause();}catch(e){} }
+    const begin = ()=>{ if(v.currentTime >= l.s || v.paused){ go(); v.removeEventListener('timeupdate',begin); } };
     v.addEventListener('timeupdate',begin);
-    beginRec();
-  }).catch(()=>toast('Mikrofon yok — izin verip yenile'));
+    setTimeout(()=>{ if(!started) go(); }, 3000); // guvenlik: video takilirsa yine de baslat
+  }).catch(()=>{ $('rec-btn').disabled=false; toast('Mikrofon yok --- izin verip yenile'); });
 }
+
 function afterRec(l){
   $('count').textContent = '✓ '+(l.e-l.s).toFixed(1)+' sn';
   $('listen-btn').style.display=''; $('redo-btn').style.display=''; $('accept-btn').style.display='';
