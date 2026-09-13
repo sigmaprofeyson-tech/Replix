@@ -305,7 +305,7 @@
       },
       {
         "c": 1,
-        "text": "iki gün, öylece kanın içinde yattık,sonra bizi buldular",
+        "text": "sen unuttun ama ben o günü asla unutamadım",
         "s": 58.0,
         "e": 60.5
       },
@@ -323,7 +323,7 @@
       },
       {
         "c": 0,
-        "text": "devren nerde",
+        "text": "debra nerde",
         "s": 64.0,
         "e": 65.5
       },
@@ -332,6 +332,32 @@
         "text": "başlamak için seni bekliyordum",
         "s": 66.0,
         "e": 69.0
+      }
+    ]
+  },
+  {
+    "name": "yeşil yol idam",
+    "category": "Dram",
+    "language": "tr",
+    "duration": 38,
+    "video": "yesilyol.mp4",
+    "thumb": "yesilyol.jpg",
+    "chars": [
+      "zenci adam",
+      "polis"
+    ],
+    "lines": [
+      {
+        "c": 1,
+        "text": "lütfen patron, o şeyi yüzüme kapatma,beni karanlıkta bırakma karanlıktan korkuyorum",
+        "s": 6.0,
+        "e": 19.0
+      },
+      {
+        "c": 0,
+        "text": "bynie",
+        "s": 27.0,
+        "e": 29.0
       }
     ]
   }
