@@ -35,7 +35,7 @@ function renderScenes(){
       <div class="cat">${s.category} · ${s.duration}s · ${s.difficulty}</div>
       <div class="name">${esc(s.name)}</div>
       <div class="meta"><span class="chip">${s.chars.length} karakter</span><span class="chip">${s.views} görüntülenme</span><span class="chip">ücretsiz</span></div>
-    </div>`).join('') : '<p class="note">Sahne yok — “Sahne gönder” sayfasından ilk klibi yükleyebilirsin.</p>';
+    </div>`).join('') : '<p class="note">Şu an sistemde oynanabilir bir sahne bulunmuyor.</p>';
 }
 function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
@@ -230,49 +230,6 @@ function likeDub(el,id){
   fetch('/api/dubs/'+id+'/like',{method:'POST'}).then(r=>r.json()).then(d=>{ el.textContent='♥ '+d.likes; el.style.color='#f87171'; });
 }
 
-// ---------- SAHNE GÖNDER ----------
-function addLineRow(){
-  const div = document.createElement('div');
-  div.className = 'line-row';
-  div.innerHTML = `<select class="lr-char"></select><input class="lr-text" placeholder="Replik metni"><input class="lr-s" type="number" step="0.1" placeholder="başla"><input class="lr-e" type="number" step="0.1" placeholder="bitir"><button class="btn" style="padding:6px 10px" onclick="this.parentElement.remove()">✕</button>`;
-  $('s-lines').appendChild(div);
-  refreshCharSelects();
-}
-function refreshCharSelects(){
-  const chars = $('s-chars').value.split(',').map(x=>x.trim()).filter(Boolean);
-  document.querySelectorAll('.lr-char').forEach(s=>{
-    const cur = s.value;
-    s.innerHTML = chars.map((c,i)=>`<option value="${i}">${esc(c)}</option>`).join('');
-    if(cur) s.value = cur;
-  });
-}
-$('s-chars') && $('s-chars').addEventListener('input', refreshCharSelects);
-addLineRow();
-async function submitScene(){
-  const msg = $('s-msg');
-  if(!$('s-rights').checked) { msg.textContent='Önce hak onayını işaretle.'; return; }
-  const chars = $('s-chars').value.split(',').map(x=>x.trim()).filter(Boolean);
-  if(!chars.length || !$('s-name').value || !$('s-video').files[0]) { msg.textContent='Video, isim ve en az bir karakter zorunlu.'; return; }
-  const lines = [...document.querySelectorAll('.line-row')].map(r=>({
-    c: parseInt(r.querySelector('.lr-char').value),
-    t: r.querySelector('.lr-text').value,
-    s: parseFloat(r.querySelector('.lr-s').value)||0,
-    e: parseFloat(r.querySelector('.lr-e').value)||0
-  })).filter(l=>l.t && l.e>l.s);
-  if(!lines.length) { msg.textContent='En az bir geçerli replik gir (bitiş > başlangıç).'; return; }
-  const fd = new FormData();
-  fd.append('video', $('s-video').files[0]);
-  fd.append('name', $('s-name').value);
-  fd.append('category', $('s-cat').value);
-  fd.append('duration', $('s-dur').value);
-  fd.append('chars', JSON.stringify(chars));
-  fd.append('lines', JSON.stringify(lines));
-  msg.textContent='Yükleniyor…';
-  const r = await fetch('/api/scenes',{method:'POST',body:fd}).then(r=>r.json());
-  msg.textContent = r.error ? ('Hata: '+r.error) : (r.status==='approved' ? 'Yayında! Sahneler sayfasına göz at.' : 'Gönderildi — admin onayı bekleniyor.');
-  if(r.status==='approved') setTimeout(()=>go('scenes'), 800);
-}
-
 // ---------- ADMİN ----------
 async function adminLoad(){
   const t = $('a-token').value.trim();
@@ -290,7 +247,7 @@ async function adminApprove(id,t){ await fetch(`/api/admin/scenes/${id}/approve`
 async function adminDelete(id,t){ if(!confirm('Sahne silinsin mi?')) return; await fetch(`/api/admin/scenes/${id}/delete`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:t})}); adminLoad(); }
 
 // ---------- ROUTING ----------
-const routes = {'':'home','sahneler':'scenes','katil':'join','topluluk':'community','gonder':'submit','admin':'admin'};
+const routes = {'':'home','sahneler':'scenes','katil':'join','topluluk':'community','admin':'admin'};
 function route(){
   const h = location.hash.replace(/^#\/?/,'').split('?')[0];
   go(routes[h] || 'home');
