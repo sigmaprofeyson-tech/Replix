@@ -143,7 +143,7 @@
         "e": 3.5
       },
       {
-        "c": 4,
+        "c": 3,
         "text": "kız bu türkçe konuşmuyor sadece çince",
         "s": 6.5,
         "e": 10.0
@@ -155,13 +155,13 @@
         "e": 14.5
       },
       {
-        "c": 2,
+        "c": 1,
         "text": "(çince bişeyler)",
         "s": 15.0,
         "e": 17.0
       },
       {
-        "c": 3,
+        "c": 2,
         "text": "bir tercümana ihtiyacımız olacak",
         "s": 18.0,
         "e": 20.0
