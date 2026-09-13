@@ -9,6 +9,7 @@ const { Server } = require('socket.io');
 const multer = require('multer');
 const Database = require('better-sqlite3');
 const { spawn } = require('child_process');
+const https = require('https');
 
 const FFMPEG = require('ffmpeg-static'); // Render'da sistem ffmpeg'i yoksa bile calisir
 const PORT = process.env.PORT || 3000;
@@ -81,6 +82,23 @@ async function ensureMuteVideo(videoFile) {
   return muteName;
 }
 
+
+// uzaktan video indirir (yönlendirmeleri takip eder) - scenes dosyasi buyukse GitHub'a sigmayan videolar icin
+function downloadFile(url, dest) {
+  return new Promise((resolve, reject) => {
+    const mod = url.startsWith('https') ? https : http;
+    mod.get(url, (res) => {
+      if ([301, 302, 307, 308].includes(res.statusCode) && res.headers.location)
+        return downloadFile(res.headers.location, dest).then(resolve, reject);
+      if (res.statusCode !== 200) return reject(new Error('indirme hatasi HTTP ' + res.statusCode));
+      const f = fs.createWriteStream(dest);
+      res.pipe(f);
+      f.on('finish', () => f.close(resolve));
+      f.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
 // ---------- SAHNELERI JSON'DAN OTOMATIK YUKLEME ----------
 // Proje her basladiginda scenes_data.json'daki sahneleri okur,
 // videoyu scenes/ klasorunden uploads/'a kopyalar, SESSIZ kopyasini uretir
@@ -96,9 +114,15 @@ try {
   const insertStmt = db.prepare(`INSERT INTO scenes(name, category, language, duration, video, thumb, chars, lines, difficulty, status, created_at, video_mute) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`);
   const checkStmt = db.prepare(`SELECT id, video_mute FROM scenes WHERE name=?`);
   for (const s of scenesData) {
+    fs.mkdirSync(path.join(__dirname, 'scenes'), { recursive: true });
     const videoPath = path.join(__dirname, 'scenes', s.video);
     const targetPath = path.join(UP, s.video);
-    if (!fs.existsSync(videoPath)) { console.error('[Sistem] UYARI: video bulunamadi ->', videoPath); continue; }
+    if (!fs.existsSync(videoPath)) {
+      if (s.url) {
+        console.log('[Sistem] video indiriliyor:', s.url);
+        try { await downloadFile(s.url, videoPath); } catch (e) { console.error('[Sistem] indirilemedi:', s.video, e.message); continue; }
+      } else { console.error('[Sistem] UYARI: video bulunamadi ->', videoPath); continue; }
+    }
     if (!fs.existsSync(targetPath)) fs.copyFileSync(videoPath, targetPath);
     if (s.thumb) {
       const thumbPath = path.join(__dirname, 'scenes', s.thumb);
@@ -225,7 +249,7 @@ async function pump() {
     });
     let mixIn = lines.map((l, i) => r.recFiles.has(i) ? '[a' + i + ']' : '').join('');
     let filterStr;
-    if (n > 0) filterStr = parts.join(';') + ';' + mixIn + 'amix=inputs=' + n + ':normalize=1[aout]';
+    if (n > 0) filterStr = parts.join(';') + ';' + mixIn + 'amix=inputs=' + n + ':normalize=0,loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000:first_pts=0[aout]';
     else filterStr = 'anullsrc=r=48000:d=' + dur + '[aout]';
     args.push('-filter_complex', filterStr, '-map', '0:v:0', '-map', '[aout]',
       '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', outPath);
