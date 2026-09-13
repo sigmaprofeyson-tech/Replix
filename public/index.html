@@ -14,7 +14,7 @@
     <a href="#/" onclick="go('home');return false">Ana sayfa</a>
     <a href="#/sahneler" onclick="go('scenes');return false">Sahneler</a>
     <a href="#/topluluk" onclick="go('community');return false">Topluluk</a>
-    <a href="#/gonder" onclick="go('submit');return false">Sahne gönder</a>
+    <!-- Sahne Gonder butonu kaldirildi -->
     <a href="#/admin" onclick="go('admin');return false">Admin</a>
   </div>
   <span class="badge"><i></i> tamamen ücretsiz</span>
@@ -41,7 +41,7 @@
   </div>
   <h2>Nasıl çalışır?</h2>
   <div class="grid4">
-    <div class="card"><b>01 · Sahne seç</b><p class="note">Katalogdan gerçek video klip kap. İstersen kendi klibini yükle.</p></div>
+    <div class="card"><b>01 · Sahne seç</b><p class="note">Katalogdan hazır sahnelerden birini seç.</p></div>
     <div class="card"><b>02 · Kodu gönder</b><p class="note">Tek oda kodu yeterli; herkes tarayıcıdan katılır.</p></div>
     <div class="card"><b>03 · Karakterin düşer</b><p class="note">Dağıtım sunucuda rastgele — sürpriz senindir.</p></div>
     <div class="card"><b>04 · Kaydet, izle</b><p class="note">Sesler sahne zamanlamasıyla karışır, final hep birlikte izlenir.</p></div>
@@ -51,7 +51,7 @@
 <!-- SAHNELER -->
 <section class="view" id="view-scenes">
   <h1 style="font-size:28px">Sahneler</h1>
-  <p class="note">Henüz sahne yoksa <a href="#/gonder" onclick="go('submit');return false">sahne gönder</a> sayfasından gerçek video klibini yükle. (AUTO_APPROVE açıksa anında yayınlanır.)</p>
+  <p class="note">Sahneler otomatik olarak sisteme eklenmektedir.</p>
   <input id="q" placeholder="Sahne ara…" oninput="renderScenes()">
   <div class="filters" id="filters"></div>
   <div class="grid" id="scene-grid"></div>
@@ -170,32 +170,6 @@
 <section class="view" id="view-community">
   <h1 style="font-size:28px">Topluluktan dublajlar</h1>
   <div class="grid" id="dub-grid"></div>
-</section>
-
-<!-- SAHNE GÖNDER -->
-<section class="view" id="view-submit">
-  <div class="panel" style="max-width:640px">
-    <h2>Sahne gönder</h2>
-    <p class="note">Gerçek video klibini yükle; repliklerini ve zaman kodlarını gir. Admin onayından sonra katalogda yayınlanır.</p>
-    <label class="lbl">Video klibi (mp4/webm)</label>
-    <input type="file" id="s-video" accept="video/*">
-    <label class="lbl">Sahne adı</label>
-    <input id="s-name" maxlength="80">
-    <div class="row">
-      <div style="flex:1"><label class="lbl">Kategori</label>
-        <select id="s-cat"><option>Komedi</option><option>Dram</option><option>Korku</option><option>Aksiyon</option><option>Animasyon</option><option>Fantastik</option><option>Bilim kurgu</option><option>Genel</option></select></div>
-      <div style="flex:1"><label class="lbl">Süre (sn)</label><input id="s-dur" type="number" value="30" min="5" max="600"></div>
-    </div>
-    <label class="lbl">Karakter isimleri (virgülle)</label>
-    <input id="s-chars" placeholder="Ali, Veli, Anne">
-    <label class="lbl">Replikler</label>
-    <div id="s-lines"></div>
-    <button class="btn" onclick="addLineRow()">+ Replik ekle</button>
-    <label class="lbl" style="margin-top:14px">Hak onayı</label>
-    <label class="check"><input type="checkbox" id="s-rights"> Yüklediğim içerik için gerekli haklara sahibim / telif içermiyor.</label>
-    <button class="btn primary full" style="margin-top:16px" onclick="submitScene()">Sahneyi gönder</button>
-    <p class="note" id="s-msg"></p>
-  </div>
 </section>
 
 <!-- ADMİN -->
