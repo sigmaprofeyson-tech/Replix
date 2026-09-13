@@ -63,6 +63,49 @@ CREATE TABLE IF NOT EXISTS likes(
 );
 `);
 
+// ---------- SAHNELERI JSON'DAN OTOMATIK YUKLEME ----------
+try {
+  const scenesDataPath = path.join(__dirname, 'scenes_data.json');
+  if (fs.existsSync(scenesDataPath)) {
+    const scenesData = JSON.parse(fs.readFileSync(scenesDataPath, 'utf8'));
+    const insertStmt = db.prepare(`INSERT INTO scenes(name, category, language, duration, video, thumb, chars, lines, difficulty, status, created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)`);
+    const checkStmt = db.prepare(`SELECT id FROM scenes WHERE name=?`);
+
+    for (const s of scenesData) {
+      if (!checkStmt.get(s.name)) {
+        // Videoyu kopyala
+        const videoPath = path.join(__dirname, 'scenes', s.video);
+        if (fs.existsSync(videoPath)) fs.copyFileSync(videoPath, path.join(UP, s.video));
+        
+        // Kucuk resmi kopyala
+        if (s.thumb) {
+          const thumbPath = path.join(__dirname, 'scenes', s.thumb);
+          if (fs.existsSync(thumbPath)) fs.copyFileSync(thumbPath, path.join(UP, s.thumb));
+        }
+
+        // Veritabanina ekle
+        insertStmt.run(
+          s.name, 
+          s.category || 'Genel', 
+          s.language || 'tr', 
+          s.duration, 
+          s.video, 
+          s.thumb || '', 
+          JSON.stringify(s.chars), 
+          JSON.stringify(s.lines), 
+          s.difficulty || 'Orta', 
+          'approved', 
+          Date.now()
+        );
+        console.log(`[Sistem] Yeni sahne yuklendi: ${s.name}`);
+      }
+    }
+  }
+} catch (err) {
+  console.error('[Sistem] scenes_data.json yuklenirken hata:', err.message);
+}
+// ---------------------------------------------------------
+
 // ---------- YARDIMCILAR ----------
 function parseCookies(req) {
   const out = {};
@@ -209,33 +252,6 @@ app.get('/api/scenes/:id', (req, res) => {
   if (!r) return res.status(404).json({ error: 'sahne yok' });
   db.prepare('UPDATE scenes SET views=views+1 WHERE id=?').run(r.id);
   res.json({ ...r, chars: JSON.parse(r.chars), lines: JSON.parse(r.lines) });
-});
-
-// sahne yukleme (gercek video klibi) - multipart: video (zorunlu), thumb (opsiyonel)
-app.post('/api/scenes', upload.fields([{ name: 'video', maxCount: 1 }, { name: 'thumb', maxCount: 1 }]), async (req, res) => {
-  try {
-    const b = req.body;
-    const chars = JSON.parse(b.chars || '[]');
-    const lines = JSON.parse(b.lines || '[]');
-    if (!req.files || !req.files.video) return res.status(400).json({ error: 'video zorunlu' });
-    if (!b.name || !chars.length || !lines.length) return res.status(400).json({ error: 'isim, karakter ve replik zorunlu' });
-    const vid = req.files.video[0];
-    if (!vid.mimetype.startsWith('video/')) return res.status(400).json({ error: 'dosya turu video olmali' });
-    let thumb = req.files.thumb && req.files.thumb[0] ? path.basename(req.files.thumb[0].path) : null;
-    if (!thumb) { // videodan ilk kareyi kap
-      thumb = 'thumb-' + vid.filename.replace(/\.[^.]+$/, '.jpg');
-      try { await ffmpeg(['-y', '-i', vid.path, '-ss', '1', '-vframes', '1', path.join(UP, thumb)]); }
-      catch (e) { thumb = null; }
-    }
-    const isAdmin = (b.adminToken || '') === ADMIN_TOKEN;
-    const status = (isAdmin || AUTO_APPROVE) ? 'approved' : 'pending';
-    const info = db.prepare(`INSERT INTO scenes(name,category,language,duration,video,thumb,chars,lines,difficulty,status,created_at)
-      VALUES(?,?,?,?,?,?,?,?,?,?,?)`)
-      .run(String(b.name).slice(0, 80), String(b.category || 'Genel').slice(0, 30), String(b.language || 'tr').slice(0, 10),
-        Math.max(5, Math.min(600, parseFloat(b.duration) || 30)), path.basename(vid.path), thumb,
-        JSON.stringify(chars), JSON.stringify(lines), String(b.difficulty || 'Orta').slice(0, 20), status, Date.now());
-    res.json({ ok: true, id: info.lastInsertRowid, status });
-  } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 app.get('/api/dubs', (req, res) => {
