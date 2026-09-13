@@ -177,7 +177,69 @@
         "text": "o türkçe biliyo. sadece biraz utangaç. değil mi?",
         "s": 25.5,
         "e": 29.0
+      },
+    ]
+  },
+  {
+    "name": "recep ivedik kamyoncu",
+    "category": "Komedi",
+    "language": "tr",
+    "duration": 40,
+    "video": "recepivedik.mp4",
+    "thumb": "recepivedik.jpg",
+    "chars": [
+      "Recep",
+      "Kamyoncu"
+    ],
+    "lines": [
+      {
+        "c": 0,
+        "text": "genelde burda kadın resimleri olur da sende hep zenci zenci erkekler var burda, sen body sporuynan mı uğraşıyosun",
+        "s": 3.5,
+        "e": 10.5
+      },
+      {
+        "c": 1,
+        "text": "yok, ben direktmen badicilerin kendisine meraklıyım",
+        "s": 11.0,
+        "e": 16.0
+      },
+      {
+        "c": 1,
+        "text": "böyle ıslak, ateşli, terli (azma efekti)",
+        "s": 17.0,
+        "e": 25.0
+      },
+      {
+        "c": 0,
+        "text": "la siktir git adamın asabını bozma çek sağa, .ek sağa adamın asabını bozma",
+        "s": 25.0,
+        "e": 29.0.
+      },
+      {
+        "c": 1,
+        "text": "recep kareş yanlış anladın bak",
+        "s": 29.0,
+        "e": 30.5
+      },
+      {
+        "c": 0,
+        "text": "vites topuzunu kıçına sokarım, iki samimi sohbet ettik hemen ırzımıza geçmeye kalkıyosun",
+        "s": 30.5,
+        "e": 35.5
+      },
+      {
+        "c": 1,
+        "text": "b-bak recep kardeş beni yanlış anladın",
+        "s": 36.0,
+        "e": 38.0
+      },
+      {
+        "c": 1,
+        "text": "dombili, seks manyağı dombik",
+        "s": 37.5,
+        "e": 40.0
       }
     ]
-  }
+  },
 ]
