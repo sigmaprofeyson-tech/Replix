@@ -66,42 +66,62 @@ CREATE TABLE IF NOT EXISTS likes(
 
 // ---------- SAHNELERI JSON'DAN OTOMATIK YUKLEME ----------
 // Proje her basladiginda scenes_data.json'daki sahneleri okur,
-// videoyu scenes/ klasorunden uploads/'a kopyalar ve veritabanina ekler.
+// videoyu scenes/ klasorunden uploads/'a kopyalar, SESSIZ kopyasini uretir
+// ve sahneyi onayli olarak veritabanina ekler.
+(async () => {
 try {
   const scenesDataPath = path.join(__dirname, 'scenes_data.json');
-  if (fs.existsSync(scenesDataPath)) {
-    const scenesData = JSON.parse(fs.readFileSync(scenesDataPath, 'utf8'));
-    const insertStmt = db.prepare(`INSERT INTO scenes(name, category, language, duration, video, thumb, chars, lines, difficulty, status, created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)`);
-    const checkStmt = db.prepare(`SELECT id, video FROM scenes WHERE name=?`);
-    for (const s of scenesData) {
-      const existing = checkStmt.get(s.name);
-      const videoPath = path.join(__dirname, 'scenes', s.video);
-      const targetPath = path.join(UP, s.video);
-      const videoOk = fs.existsSync(videoPath);
-      if (!fs.existsSync(targetPath) && videoOk) fs.copyFileSync(videoPath, targetPath);
-      if (s.thumb) {
-        const thumbPath = path.join(__dirname, 'scenes', s.thumb);
-        if (!fs.existsSync(path.join(UP, s.thumb)) && fs.existsSync(thumbPath)) fs.copyFileSync(thumbPath, path.join(UP, s.thumb));
-      }
-      if (!existing) {
-        if (!videoOk) { console.error('[Sistem] UYARI: video bulunamadi ->', videoPath); continue; }
-        insertStmt.run(
-          s.name, s.category || 'Genel', s.language || 'tr', s.duration,
-          s.video, s.thumb || '',
-          JSON.stringify(s.chars),
-          JSON.stringify(s.lines.map(l => ({ ...l, text: l.text || l.t || l.replik || '(Metin yok)' }))),
-          s.difficulty || 'Orta', 'approved', Date.now()
-        );
-        console.log('[Sistem] Yeni sahne yuklendi:', s.name);
-      }
-    }
-  } else {
+  if (!fs.existsSync(scenesDataPath)) {
     console.log('[Sistem] scenes_data.json bulunamadi, atlaniyor.');
+    return;
+  }
+  const scenesData = JSON.parse(fs.readFileSync(scenesDataPath, 'utf8'));
+  const insertStmt = db.prepare(`INSERT INTO scenes(name, category, language, duration, video, thumb, chars, lines, difficulty, status, created_at, video_mute) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`);
+  const checkStmt = db.prepare(`SELECT id FROM scenes WHERE name=?`);
+  for (const s of scenesData) {
+    const videoPath = path.join(__dirname, 'scenes', s.video);
+    const targetPath = path.join(UP, s.video);
+    if (!fs.existsSync(videoPath)) { console.error('[Sistem] UYARI: video bulunamadi ->', videoPath); continue; }
+    if (!fs.existsSync(targetPath)) fs.copyFileSync(videoPath, targetPath);
+    if (s.thumb) {
+      const thumbPath = path.join(__dirname, 'scenes', s.thumb);
+      if (fs.existsSync(thumbPath) && !fs.existsSync(path.join(UP, s.thumb))) fs.copyFileSync(thumbPath, path.join(UP, s.thumb));
+    }
+    const videoMute = await ensureMuteVideo(s.video);
+    if (!checkStmt.get(s.name)) {
+      insertStmt.run(
+        s.name, s.category || 'Genel', s.language || 'tr', s.duration,
+        s.video, s.thumb || '',
+        JSON.stringify(s.chars),
+        JSON.stringify(s.lines.map(l => ({ ...l, text: l.text || l.t || l.replik || '(Metin yok)' }))),
+        s.difficulty || 'Orta', 'approved', Date.now(), videoMute
+      );
+      console.log('[Sistem] Yeni sahne yuklendi:', s.name);
+    }
   }
 } catch (err) {
   console.error('[Sistem] scenes_data.json yuklenirken hata:', err.message);
 }
+})();
 // ---------------------------------------------------------
+
+// eski veritabanlarina video_mute kolonu ekle (sessiz oynatma videosu)
+try {
+  const cols = db.prepare("PRAGMA table_info(scenes)").all().map(c => c.name);
+  if (!cols.includes('video_mute')) db.exec("ALTER TABLE scenes ADD COLUMN video_mute TEXT");
+} catch (e) {}
+
+// sahnenin SESsiz kopyasini uretir (kayit sirasinda mikrofona orijinal ses karsmasin diye)
+async function ensureMuteVideo(videoFile) {
+  if (!videoFile) return null;
+  const muteName = 'mute-' + videoFile;
+  const mutePath = path.join(UP, muteName);
+  if (!fs.existsSync(mutePath)) {
+    try { await ffmpeg(['-y', '-i', path.join(UP, videoFile), '-an', '-c:v', 'copy', mutePath]); }
+    catch (e) { console.error('[Sistem] sessiz video uretilemedi:', videoFile, e.message); return null; }
+  }
+  return muteName;
+}
 
 // ---------- YARDIMCILAR ----------
 function parseCookies(req) {
@@ -149,7 +169,7 @@ function makeCode() {
 }
 
 function publicState(r) {
-  const scene = db.prepare('SELECT id,name,category,duration,video,thumb,chars,lines FROM scenes WHERE id=?').get(r.sceneId);
+  const scene = db.prepare('SELECT id,name,category,duration,video,video_mute,thumb,chars,lines FROM scenes WHERE id=?').get(r.sceneId);
   return {
     code: r.code,
     phase: r.phase,
@@ -201,7 +221,7 @@ async function pump() {
     });
     let mixIn = lines.map((l, i) => r.recFiles.has(i) ? '[a' + i + ']' : '').join('');
     let filterStr;
-    if (n > 0) filterStr = parts.join(';') + ';' + mixIn + 'amix=inputs=' + n + ':normalize=0[aout]';
+    if (n > 0) filterStr = parts.join(';') + ';' + mixIn + 'amix=inputs=' + n + ':normalize=1[aout]';
     else filterStr = 'anullsrc=r=48000:d=' + dur + '[aout]';
     args.push('-filter_complex', filterStr, '-map', '0:v:0', '-map', '[aout]',
       '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', outPath);
@@ -251,7 +271,7 @@ app.post('/api/guest', (req, res) => {
 app.get('/api/me', (req, res) => res.json({ name: sessionName(req) }));
 
 app.get('/api/scenes', (req, res) => {
-  const rows = db.prepare("SELECT id,name,category,language,duration,thumb,chars,lines,difficulty,views FROM scenes WHERE status='approved' ORDER BY id DESC").all();
+  const rows = db.prepare("SELECT id,name,category,language,duration,video,video_mute,thumb,chars,lines,difficulty,views FROM scenes WHERE status='approved' ORDER BY id DESC").all();
   res.json(rows.map(r => ({ 
       ...r, 
       chars: JSON.parse(r.chars), 
@@ -294,10 +314,11 @@ app.post('/api/scenes', upload.fields([{ name: 'video', maxCount: 1 }, { name: '
     }
     const isAdmin = (b.adminToken || '') === ADMIN_TOKEN;
     const status = (isAdmin || AUTO_APPROVE) ? 'approved' : 'pending';
-    const info = db.prepare(`INSERT INTO scenes(name,category,language,duration,video,thumb,chars,lines,difficulty,status,created_at)
-      VALUES(?,?,?,?,?,?,?,?,?,?,?)`)
+    const videoMute = await ensureMuteVideo(path.basename(vid.path));
+    const info = db.prepare(`INSERT INTO scenes(name,category,language,duration,video,video_mute,thumb,chars,lines,difficulty,status,created_at)
+      VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`)
       .run(String(b.name).slice(0, 80), String(b.category || 'Genel').slice(0, 30), String(b.language || 'tr').slice(0, 10),
-        Math.max(5, Math.min(600, parseFloat(b.duration) || 30)), path.basename(vid.path), thumb,
+        Math.max(5, Math.min(600, parseFloat(b.duration) || 30)), path.basename(vid.path), videoMute, thumb,
         JSON.stringify(chars), JSON.stringify(lines), String(b.difficulty || 'Orta').slice(0, 20), status, Date.now());
     res.json({ ok: true, id: info.lastInsertRowid, status });
   } catch (e) { res.status(500).json({ error: e.message }); }
@@ -431,7 +452,7 @@ io.on('connection', (sock) => {
     if (!r) return;
     const first = r.players.values().next().value;
     if (!first || first.sid !== sock.id) return cb && cb({ error: 'sadece host baslatabilir' });
-    if (![...r.players.values()].every(p => p.ready)) return cb && cb({ error: 'herkes hazir olmali' });
+    if (r.players.size > 1 && ![...r.players.values()].every(p => p.ready)) return cb && cb({ error: 'herkes hazir olmali' });
     const chars = JSON.parse(db.prepare('SELECT chars FROM scenes WHERE id=?').get(r.sceneId).chars);
     const ps = shuffle([...r.players.keys()]);
     const pool = shuffle(chars.slice());
