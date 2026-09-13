@@ -321,7 +321,7 @@ app.get('/api/admin/dubs', (req, res) => {
 
 // ---------- SOCKET.IO (gercek zamanli oda) ----------
 io.on('connection', (sock) => {
-  const token = parseCookies(sock.handshake.headers).rx_token;
+  const token = parseCookies(sock.handshake).rx_token;
   let myRoom = null;
 
   sock.on('room:create', ({ sceneId }, cb) => {
