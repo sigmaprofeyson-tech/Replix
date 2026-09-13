@@ -242,4 +242,96 @@
       }
     ]
   }
+    {
+    "name": "kan kardeşleri",
+    "category": "Dram",
+    "language": "tr",
+    "duration": 69,
+    "video": "dexter1.mp4",
+    "thumb": "dexter1.jpg",
+    "chars": [
+      "Dexter",
+      "Brian"
+    ],
+    "lines": [
+      {
+        "c": 1,
+        "text": "hatırladın mı?",
+        "s": 0,
+        "e": 1.0
+      },
+      {
+        "c": 0,
+        "text": "bynie",
+        "s": 5.0,
+        "e": 6.0
+      },
+      {
+        "c": 1,
+        "text": "bir türlü brian diyemezdin ki zaten",
+        "s": 7.0,
+        "e": 9.0
+      },
+      {
+        "c": 1,
+        "text": "bir kardeşim var, gerçek bir kardeş, bakıcı ailenin çocuğu değil",
+        "s": 12.0,
+        "e": 18.0
+      },
+      {
+        "c": 1,
+        "text": "biz aynı kandan geliyoruz, doğum ve ölümden",
+        "s": 18.5,
+        "e": 22.0
+      },
+      {
+        "c": 1,
+        "text": "annemin ölümünü izledik, bunu atlatmış olmamız mucize değil mi? testere, uçuşan organlar, ve kan",
+        "s": 23.0,
+        "e": 33.0
+      },
+      {
+        "c": 0,
+        "text": "(nefes alma verme sesi) sen de orda mıydın",
+        "s": 49.0,
+        "e": 51.5
+      },
+      {
+        "c": 1,
+        "text": "iki gün, öylece kanın içinde yattık,sonra bizi buldular",
+        "s": 52.5,
+        "e": 57.5
+      },
+      {
+        "c": 1,
+        "text": "iki gün, öylece kanın içinde yattık,sonra bizi buldular",
+        "s": 58.0,
+        "e": 60.5
+      },
+      {
+        "c": 0,
+        "text": "doğumu",
+        "s": 60.5,
+        "e": 61.5
+      },
+      {
+        "c": 1,
+        "text": "aynen öyle",
+        "s": 61.5,
+        "e": 62.5
+      },
+      {
+        "c": 0,
+        "text": "devren nerde",
+        "s": 64.0,
+        "e": 65.5
+      },
+      {
+        "c": 1,
+        "text": "başlamak için seni bekliyordum",
+        "s": 66.0,
+        "e": 69.0
+      }
+    ]
+  }
 ]
